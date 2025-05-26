@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' - Platonus'">Platonus - Регистрация преподавателя</title>
+    <style>
+        :root {
+            --bg-color: #f5f7fa;
+            --text-color: #333;
+            --input-bg: #fff;
+            --border-color: #ddd;
+            --button-bg: #d32f2f;
+            --button-hover: #b71c1c;
+            --button-text: #fff;
+        }
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --input-bg: #2c2c2c;
+            --border-color: #444;
+            --button-bg: #b71c1c;
+            --button-hover: #d32f2f;
+            --button-text: #fff;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: all 0.3s ease;
+        }
+        .register-container {
+            background-color: var(--input-bg);
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .register-container h2 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: var(--text-color);
+        }
+        .register-container input[type="text"],
+        .register-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+        .register-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            border-radius: 3px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .register-container button:hover {
+            background-color: var(--button-hover);
+        }
+        .register-container a {
+            display: block;
+            margin: 10px 0;
+            font-size: 12px;
+            color: var(--button-bg);
+            text-decoration: none;
+        }
+        .register-container a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            font-size: 12px;
+            color: var(--text-color);
+        }
+    </style>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div class="register-container">
+    <h2 th:text="${title}"></h2>
+    <form th:action="@{/teacher-register}" th:object="${user}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="text" th:field="*{username}" placeholder="Логин" required />
+        <input type="password" th:field="*{password}" placeholder="Пароль" required />
+        <input type="text" th:field="*{firstName}" placeholder="Имя" required />
+        <input type="text" th:field="*{lastName}" placeholder="Фамилия" required />
+        <input type="text" th:field="*{middleName}" placeholder="Отчество" required />
+        <input type="text" th:field="*{groupName}" placeholder="Предмет (например, Математика)" required />
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <a th:href="@{/login}">Вернуться к входу</a>
+</div>
+<div class="footer">
+    © Plat v1.1.1 (build# 11). 2025-05-25 Plat
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.createElement('button');
+        themeToggle.id = 'theme-toggle';
+        themeToggle.style.position = 'fixed';
+        themeToggle.style.top = '10px';
+        themeToggle.style.right = '20px';
+        themeToggle.style.padding = '5px 10px';
+        themeToggle.style.border = '1px solid var(--button-bg)';
+        themeToggle.style.borderRadius = '3px';
+        themeToggle.style.background = 'none';
+        themeToggle.style.color = 'var(--button-bg)';
+        themeToggle.style.cursor = 'pointer';
+        document.body.appendChild(themeToggle);
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeToggle.textContent = 'Светлая тема';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeToggle.textContent = 'Тёмная тема';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggle.textContent = 'Тёмная тема';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = 'Светлая тема';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    });
+</script>
+</body>
+</html>

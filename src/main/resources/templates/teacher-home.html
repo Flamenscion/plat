@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title} + ' - Platonus'">Platonus - Главная</title>
+    <title th:text="${title} + ' - Platonus'">Platonus - Главная (Преподаватель)</title>
     <style>
         :root {
             --bg-color: #f5f7fa;
@@ -124,8 +124,8 @@
 <div class="header">
     <div class="user-buttons">
         <a href="/profile">Профиль</a>
-        <a href="/schedule">Расписание</a>
-        <a href="/grades">Оценки</a>
+        <a href="/teacher-schedule">Моё расписание</a>
+        <a href="/teacher-grades">Оценки студентов</a>
         <form th:action="@{/logout}" method="post" style="display: inline;">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <button type="submit">Выход</button>
@@ -135,25 +135,25 @@
 </div>
 <div class="main-content">
     <div class="welcome">
-        <h2 th:text="'Добро пожаловать, ' + ${username} + '!'">Добро пожаловать, Пользователь!</h2>
-        <p>Вы вошли в личный кабинет Platonus.</p>
+        <h2 th:text="'Добро пожаловать, ' + ${username} + '! (Преподаватель)'">Добро пожаловать, Преподаватель!</h2>
+        <p>Здесь вы можете просмотреть своё расписание занятий.</p>
     </div>
     <table class="schedule-table">
         <thead>
         <tr>
             <th>День</th>
             <th>Время</th>
+            <th>Группа</th>
             <th>Предмет</th>
-            <th>Преподаватель</th>
             <th>Аудитория</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="schedule : ${scheduleList}">
+        <tr th:each="schedule : ${teacherSchedule}">
             <td th:text="${schedule.day}"></td>
             <td th:text="${schedule.time}"></td>
+            <td th:text="${schedule.groupName}"></td>
             <td th:text="${schedule.subject}"></td>
-            <td th:text="${schedule.teacher}"></td>
             <td th:text="${schedule.room}"></td>
         </tr>
         </tbody>
